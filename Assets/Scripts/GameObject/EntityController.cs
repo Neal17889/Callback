@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class EntityController : MonoBehaviour
 {
+    public Character character;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,11 @@ public class Monster : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void FixedUpdate()
+    {
+        Vector3 position = this.character.PositionInfo.Dequeue();
+        this.transform.position = position;
     }
 }
