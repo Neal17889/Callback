@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class EntityController : MonoBehaviour
+public class UITitle : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,7 +14,11 @@ public class EntityController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 position = Character.Instance.PositionInfo.Dequeue();
-        this.transform.position = position;
+        
+    }
+
+    public void EnterGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
