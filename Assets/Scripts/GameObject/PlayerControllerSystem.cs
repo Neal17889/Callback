@@ -11,9 +11,16 @@ public class PlayerControllerSystem : MonoBehaviour
     public InputController inputControl;
     private CapsuleCollider2D coll;
     private PhysicsCheck physicsCheck;
-    
+    public Animator ani;
 
-    
+    public int keyCount = 0;
+    public bool canOpenDoor
+    {
+        get
+        {
+            return this.keyCount >= 3;
+        }
+    }
 
 
     [Header("基本参数")]
@@ -37,6 +44,8 @@ public class PlayerControllerSystem : MonoBehaviour
 
     public bool isDash;
     public bool dashAble;
+
+    
 
     private void Awake()
     {
@@ -170,7 +179,12 @@ public class PlayerControllerSystem : MonoBehaviour
     {
         if (collision.gameObject.layer == 10)
         {//碰到Trap
+            Debug.Log("角色碰到陷阱");
             GameObjectManager.Instance.PlayerDie();
+        }
+        else if (collision.gameObject.layer == 12)
+        {//碰到重生点
+            GameObjectManager.Instance.RebornPoint = collision.gameObject.transform.position;
         }
         
     }
@@ -219,7 +233,19 @@ public class PlayerControllerSystem : MonoBehaviour
 
     internal void Die()
     {
-        Destroy(this.gameObject);
+        Debug.Log("Player死亡");
+        this.ani.SetTrigger("Player_Die");
+    }
+
+    internal void OnDeath()
+    {
+        GameObjectManager.Instance.PlayerReborn();
+    }
+
+    internal void Reborn()
+    {
+        //this.gameObject.transform.localScale = Vector3.one;
+
     }
 }
 	

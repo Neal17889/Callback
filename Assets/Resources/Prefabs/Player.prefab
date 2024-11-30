@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 697656455905244439}
   - component: {fileID: 3168155014844169150}
   - component: {fileID: -4538468861766497050}
+  - component: {fileID: -8293876457827852184}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -194,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6866644642396789736}
+  ani: {fileID: -8293876457827852184}
+  keyCount: 0
   inputDirection: {x: 0, y: 0}
   speed: 300
   jumpForce: 10
@@ -233,3 +236,24 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!95 &-8293876457827852184
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610145411898004244}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da3766bf6f8d9cd4ab92fe3991e6dc81, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
