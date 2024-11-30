@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 697656455905244439}
   - component: {fileID: 3168155014844169150}
   - component: {fileID: -4538468861766497050}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -199,10 +199,12 @@ MonoBehaviour:
   jumpForce: 10
   dashForce: 15
   dashTime: 0.2
-  dashTimeCounter: 0
+  dashCD: 0
+  wallSpeed: 0
   normal: {fileID: 0}
   wall: {fileID: 0}
   isDash: 0
+  dashAble: 0
 --- !u!114 &-4538468861766497050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,9 +218,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGround: 0
+  isLeftWall: 0
+  isRightWall: 0
   checkBoxAngle: 0
   bottomOffset: {x: 0, y: -0.48}
   checkCube: {x: 1.09, y: 0.28, z: 0.03}
+  leftWallBottomOffset: {x: 0, y: 0}
+  leftWallCheckCube: {x: 0, y: 0, z: 0}
+  rightWallBottomOffset: {x: 0, y: 0}
+  rightWallCheckCube: {x: 0, y: 0, z: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0

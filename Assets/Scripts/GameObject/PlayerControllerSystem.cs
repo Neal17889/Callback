@@ -22,9 +22,13 @@ public class PlayerControllerSystem : MonoBehaviour
     public float jumpForce;
     public float dashForce;
     public float dashTime;
-    public float dashTimeCounter;
-    private bool isPresent = true;
-
+    private float dashTimeCounter;
+    public float dashCD;
+    private float dashCDCounter;
+    private float originalGravityScale;
+    public float wallSpeed;
+    
+	private bool isPresent = true;
     [Header("物理材质")]
     public PhysicsMaterial2D normal;
     public PhysicsMaterial2D wall;
@@ -32,6 +36,7 @@ public class PlayerControllerSystem : MonoBehaviour
     [Header("状态")]
 
     public bool isDash;
+    public bool dashAble;
 
     private void Awake()
     {
@@ -58,14 +63,9 @@ public class PlayerControllerSystem : MonoBehaviour
     }
     private void Update()
     {
-        if (isDash)
-        {
-            dashTimeCounter-=Time.deltaTime;
-            if (dashTimeCounter <= 0)
-            {
-                isDash = false;
-            }
-        }
+        
+        dashCheck();
+        WallCheck();
         inputDirection = inputControl.GamePlay.Move.ReadValue<Vector2>();
         //CheckState();
     }
@@ -110,10 +110,89 @@ public class PlayerControllerSystem : MonoBehaviour
 
     private void Dash(InputAction.CallbackContext obj)
     {
-        isDash= true;
-        dashTimeCounter = dashTime;
-        rb.AddForce(new Vector2(inputDirection.x*dashForce,0), ForceMode2D.Impulse);
+        if (dashAble)
+        {
+            dashGravityStop();
+            dashAble = false;
+            isDash = true;
+            dashTimeCounter = dashTime;
+            dashCDCounter = dashCD+dashTime;
+            rb.AddForce(new Vector2(inputDirection.x * dashForce, 0), ForceMode2D.Impulse);
+            if (!physicsCheck.isGround)
+            {
+                dashAble = false;
+            }
+        }
+
     }
+
+    private void dashGravityStop()//在冲刺时令重力失效
+    {
+        originalGravityScale = rb.gravityScale;
+        rb.gravityScale = 0;
+        rb.velocity = new Vector2(0, 0);
+    }
+
+    private void dashCheck()
+    {
+        if (isDash)
+        {
+            dashTimeCounter -= Time.deltaTime;
+            if (dashTimeCounter <= 0)
+            {
+                isDash = false;
+                rb.gravityScale = originalGravityScale;
+            }
+        }
+        if (physicsCheck.isGround&&dashCDCounter<=0)
+        {
+            dashAble= true;
+        }
+        if(dashCDCounter > 0) 
+        {
+            dashCDCounter-=Time.deltaTime;
+        }
+    }
+    private void WallCheck()
+    {
+        if (physicsCheck.isRightWall && inputDirection.x > 0&&rb.velocity.y<=0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,wallSpeed);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            GameObjectManager.Instance.PlayerDie();
+        }
+    }
+
+
+
+
+
+    //public void GetHurt(Transform attacker)//受伤击退函数
+    //{
+    //    isHurt = true;
+    //    rb.velocity = Vector2.zero;
+    //    Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+    //    //用坐标差值求出攻击与被攻击者之间的方向，normalized归一化使值取0或1
+    //    rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
+    //}
+
+    //public void PlayerDead()
+    //{
+    //    isDead = true;
+    //    inputControl.GamePlay.Disable();
+    //}
+
+    //private void CheckState()
+    //{
+    //    coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
+    //}
+
 
     private void TimeChange(InputAction.CallbackContext context)
     {
@@ -132,29 +211,9 @@ public class PlayerControllerSystem : MonoBehaviour
         this.isPresent = true;
     }
 
-    
-
-    
-
-
-        //public void GetHurt(Transform attacker)//受伤击退函数
-        //{
-        //    isHurt = true;
-        //    rb.velocity = Vector2.zero;
-        //    Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
-        //    //用坐标差值求出攻击与被攻击者之间的方向，normalized归一化使值取0或1
-        //    rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
-        //}
-
-        //public void PlayerDead()
-        //{
-        //    isDead = true;
-        //    inputControl.GamePlay.Disable();
-        //}
-
-        //private void CheckState()
-        //{
-        //    coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
-        //}
-
+    internal void Die()
+    {
+        Destroy(this.gameObject);
     }
+}
+	

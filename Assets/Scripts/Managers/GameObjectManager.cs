@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,4 +52,9 @@ public class GameObjectManager : MonoSingleton<GameObjectManager>
         }
     }
 
+    internal void PlayerDie()
+    {
+        this.Player.Die();
+        this.Player = null;
+    }
 }
