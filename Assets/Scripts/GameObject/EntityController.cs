@@ -12,7 +12,7 @@ public class EntityController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.rb = this.gameObject.AddComponent<Rigidbody2D>();
+        
     }
     private void Awake()
     {
@@ -33,5 +33,15 @@ public class EntityController : MonoBehaviour
     private void LateUpdate()
     {
         this.transform.position = this.rb.transform.position;
+    }
+
+    public void GoToPast()
+    {
+        rb.position += new Vector2(0, 100);
+    }
+
+    public void BackToPresent()
+    {
+        rb.position -= new Vector2(0, 100);
     }
 }

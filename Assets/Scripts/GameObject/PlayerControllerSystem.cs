@@ -1,14 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerControllerSystem : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     public InputController inputControl;
     private CapsuleCollider2D coll;
     private PhysicsCheck physicsCheck;
+    
 
     
 
@@ -20,6 +23,7 @@ public class PlayerControllerSystem : MonoBehaviour
     public float dashForce;
     public float dashTime;
     public float dashTimeCounter;
+    private bool isPresent = true;
 
     [Header("物理材质")]
     public PhysicsMaterial2D normal;
@@ -31,17 +35,18 @@ public class PlayerControllerSystem : MonoBehaviour
 
     private void Awake()
     {
+        
         inputControl = new InputController();
-        rb = GetComponent<Rigidbody2D>();
+        
         coll = GetComponent<CapsuleCollider2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
 
         //按键绑定
         inputControl.GamePlay.Jump.started += Jump;
         inputControl.GamePlay.Dash.started += Dash;
+        inputControl.GamePlay.TimeChange.started += TimeChange;
 
     }
-
 
     private void OnEnable()
     {
@@ -76,6 +81,8 @@ public class PlayerControllerSystem : MonoBehaviour
         this.transform.position = this.rb.transform.position;
     }
 
+    
+
 
 
     public void Move()
@@ -105,10 +112,29 @@ public class PlayerControllerSystem : MonoBehaviour
     {
         isDash= true;
         dashTimeCounter = dashTime;
-        rb.AddForce(new Vector2(inputDirection.x*dashForce,0), ForceMode2D.Impulse); 
+        rb.AddForce(new Vector2(inputDirection.x*dashForce,0), ForceMode2D.Impulse);
     }
 
+    private void TimeChange(InputAction.CallbackContext context)
+    {
+        GameObjectManager.Instance.TimeChange(this.isPresent);
+    }
 
+    public void GoToPast()
+    {
+        rb.position += new Vector2(0, 100);
+        this.isPresent = false;
+    }
+
+    public void BackToPresent()
+    {
+        rb.position -= new Vector2(0, 100);
+        this.isPresent = true;
+    }
+
+    
+
+    
 
 
         //public void GetHurt(Transform attacker)//受伤击退函数
