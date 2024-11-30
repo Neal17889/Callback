@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class EntityController : MonoBehaviour
 {
+    public Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.rb = this.gameObject.AddComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Vector3 position = Character.Instance.PositionInfo.Dequeue();
-        this.transform.position = position;
+        
+        Vector2 position = Character.Instance.PositionInfo.Dequeue();
+        this.rb.velocity = position;
+    }
+
+    private void LateUpdate()
+    {
+        this.transform.position = this.rb.transform.position;
     }
 }

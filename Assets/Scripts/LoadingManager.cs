@@ -10,7 +10,7 @@ public class LoadingManager : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        
+        UITips.SetActive(true);
         yield return new WaitForSeconds(2f);
         UITips.SetActive(false);
         UITitle.SetActive(true);

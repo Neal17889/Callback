@@ -15,7 +15,7 @@ public class PlayerControllerSystem : MonoBehaviour
     [Header("基本参数")]
     public Vector2 inputDirection;
     public float speed;
-    public float jumpForce;
+    public float jumpForce = 20f;
     public float hurtForce;
 
     [Header("物理材质")]
@@ -35,7 +35,7 @@ public class PlayerControllerSystem : MonoBehaviour
         coll = GetComponent<CapsuleCollider2D>();
 
         //跳跃按键绑定
-        //inputControl.Gameplay.Jump.started += Jump;
+        inputControl.GamePlay.Jump.started += Jump;
 
         //攻击按键绑定
         //inputControl.Gameplay.Attack.started += PlayerAttack;
@@ -59,11 +59,12 @@ public class PlayerControllerSystem : MonoBehaviour
     {
         if (!isHurt & !isAttack)//受伤被击退时禁用移动
             Move();
+        Character.Instance.PositionInfo.Enqueue(this.rb.velocity);
     }
 
     private void LateUpdate()
     {
-        Character.Instance.PositionInfo.Enqueue(this.transform.position);
+        this.transform.position = this.rb.transform.position;
     }
 
 
@@ -84,11 +85,11 @@ public class PlayerControllerSystem : MonoBehaviour
         transform.localScale = new Vector3(faceDir, 1, 1);
     }//玩家移动相关函数
 
-    //private void Jump(InputAction.CallbackContext obj)
-    //{
-    //    if (physicsCheck.isGround)
-    //        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-    //}//跳跃函数
+    private void Jump(InputAction.CallbackContext obj)
+    {
+        //if (physicsCheck.isGround)
+            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    }//跳跃函数
 
 
     public void GetHurt(Transform attacker)//受伤击退函数
