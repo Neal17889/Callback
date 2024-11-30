@@ -103,10 +103,8 @@ public class MainPlayerCamera : MonoSingleton<MainPlayerCamera>
         float elapsedTime = 0f;
         float moveDuration = 1f;
 
-        // 当前NPC位置设置为起始位置
         Vector3 startPosition = this.transform.position;
 
-        // 在指定时间内平滑移动NPC
         while (elapsedTime < moveDuration)
         {
             this.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveDuration);
@@ -114,9 +112,7 @@ public class MainPlayerCamera : MonoSingleton<MainPlayerCamera>
             yield return null;
         }
 
-        // 确保移动结束时位置是目标位置
         this.transform.position = targetPosition;
         this.isLerp = false;
     }
-
 }
