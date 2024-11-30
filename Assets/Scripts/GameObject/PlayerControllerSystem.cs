@@ -73,12 +73,14 @@ public class PlayerControllerSystem : MonoBehaviour
     {
         if (!isDash)//受伤被击退时禁用移动
             Move();
-        Character.Instance.PositionInfo.Enqueue(this.rb.velocity);
+        
     }
 
     private void LateUpdate()
     {
+        
         this.transform.position = this.rb.transform.position;
+        Character.Instance.PositionInfo.Enqueue(this.transform.position);
     }
 
     
@@ -117,7 +119,8 @@ public class PlayerControllerSystem : MonoBehaviour
             isDash = true;
             dashTimeCounter = dashTime;
             dashCDCounter = dashCD+dashTime;
-            rb.AddForce(new Vector2(inputDirection.x * dashForce, 0), ForceMode2D.Impulse);
+            
+            rb.AddForce(new Vector2(inputDirection.x * dashForce, inputDirection.y*dashForce), ForceMode2D.Impulse);
             if (!physicsCheck.isGround)
             {
                 dashAble = false;
@@ -125,6 +128,7 @@ public class PlayerControllerSystem : MonoBehaviour
         }
 
     }
+
 
     private void dashGravityStop()//在冲刺时令重力失效
     {
@@ -142,6 +146,7 @@ public class PlayerControllerSystem : MonoBehaviour
             {
                 isDash = false;
                 rb.gravityScale = originalGravityScale;
+                rb.velocity = new Vector2(0,0);
             }
         }
         if (physicsCheck.isGround&&dashCDCounter<=0)
@@ -164,9 +169,10 @@ public class PlayerControllerSystem : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 10)
-        {
+        {//碰到Trap
             GameObjectManager.Instance.PlayerDie();
         }
+        
     }
 
 

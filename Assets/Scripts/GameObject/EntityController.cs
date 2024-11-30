@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class EntityController : MonoBehaviour
 {
-    public Rigidbody2D rb;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -25,23 +25,14 @@ public class EntityController : MonoBehaviour
     void FixedUpdate()
     {
         
-        Vector2 v = Character.Instance.PositionInfo.Dequeue();
-        this.rb.velocity = v;
- 
+        
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        this.transform.position = this.rb.transform.position;
+        Vector2 position = Character.Instance.PositionInfo.Dequeue();
+        this.transform.position = position;
+
     }
 
-    public void GoToPast()
-    {
-        rb.position += new Vector2(0, 100);
-    }
-
-    public void BackToPresent()
-    {
-        rb.position -= new Vector2(0, 100);
-    }
 }

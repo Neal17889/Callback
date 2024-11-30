@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Character : Singleton<Character>
 {
-    public Queue<Vector2> PositionInfo = new Queue<Vector2>();
+    public Queue<Vector3> PositionInfo = new Queue<Vector3>();
 }
