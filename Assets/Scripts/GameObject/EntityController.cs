@@ -35,13 +35,4 @@ public class EntityController : MonoBehaviour
 
     }
 
-    //public void GoToPast()
-    //{
-    //    rb.position += new Vector2(0, 100);
-    //}
-
-    //public void BackToPresent()
-    //{
-    //    rb.position -= new Vector2(0, 100);
-    //}
 }

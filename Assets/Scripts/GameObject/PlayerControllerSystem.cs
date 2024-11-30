@@ -129,6 +129,7 @@ public class PlayerControllerSystem : MonoBehaviour
 
     }
 
+
     private void dashGravityStop()//在冲刺时令重力失效
     {
         originalGravityScale = rb.gravityScale;

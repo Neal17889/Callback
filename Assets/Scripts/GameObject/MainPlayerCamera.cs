@@ -42,6 +42,7 @@ public class MainPlayerCamera : MonoSingleton<MainPlayerCamera>
             this.y -= 100;
     }
 
+
     private void Update()
     {
 
@@ -117,4 +118,5 @@ public class MainPlayerCamera : MonoSingleton<MainPlayerCamera>
         this.transform.position = targetPosition;
         this.isLerp = false;
     }
+
 }

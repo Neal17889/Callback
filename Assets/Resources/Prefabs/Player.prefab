@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 697656455905244439}
   - component: {fileID: 3168155014844169150}
   - component: {fileID: -4538468861766497050}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ MonoBehaviour:
   inputDirection: {x: 0, y: 0}
   speed: 300
   jumpForce: 10
-  dashForce: 15
+  dashForce: 24
   dashTime: 0.2
   dashCD: 0
   wallSpeed: 0
