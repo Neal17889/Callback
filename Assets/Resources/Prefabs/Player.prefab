@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6866644642396789736}
   - component: {fileID: 697656455905244439}
   - component: {fileID: 3168155014844169150}
+  - component: {fileID: -4538468861766497050}
   m_Layer: 4
   m_Name: Player
   m_TagString: Untagged
@@ -138,7 +139,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -194,11 +195,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputDirection: {x: 0, y: 0}
   speed: 300
-  jumpForce: 0
-  hurtForce: 0
+  jumpForce: 10
+  dashForce: 15
+  dashTime: 0.2
+  dashTimeCounter: 0
   normal: {fileID: 0}
   wall: {fileID: 0}
-  isHurt: 0
-  isDead: 0
-  isAttack: 0
-  combo: 0
+  isDash: 0
+--- !u!114 &-4538468861766497050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610145411898004244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d02ad2121e2324cb225a6d00d638a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0
+  checkBoxAngle: 0
+  bottomOffset: {x: 0, y: -0.48}
+  checkCube: {x: 1.09, y: 0.28, z: 0.03}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64

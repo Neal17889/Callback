@@ -8,6 +8,7 @@ public class PlayerControllerSystem : MonoBehaviour
     private Rigidbody2D rb;
     public InputController inputControl;
     private CapsuleCollider2D coll;
+    private PhysicsCheck physicsCheck;
 
     
 
@@ -15,30 +16,30 @@ public class PlayerControllerSystem : MonoBehaviour
     [Header("基本参数")]
     public Vector2 inputDirection;
     public float speed;
-    public float jumpForce = 20f;
-    public float hurtForce;
+    public float jumpForce;
+    public float dashForce;
+    public float dashTime;
+    public float dashTimeCounter;
 
     [Header("物理材质")]
     public PhysicsMaterial2D normal;
     public PhysicsMaterial2D wall;
 
     [Header("状态")]
-    public bool isHurt;
-    public bool isDead;
-    public bool isAttack;
-    public int combo;
+
+    public bool isDash;
 
     private void Awake()
     {
         inputControl = new InputController();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<CapsuleCollider2D>();
+        physicsCheck = GetComponent<PhysicsCheck>();
 
-        //跳跃按键绑定
+        //按键绑定
         inputControl.GamePlay.Jump.started += Jump;
+        inputControl.GamePlay.Dash.started += Dash;
 
-        //攻击按键绑定
-        //inputControl.Gameplay.Attack.started += PlayerAttack;
     }
 
 
@@ -52,12 +53,20 @@ public class PlayerControllerSystem : MonoBehaviour
     }
     private void Update()
     {
+        if (isDash)
+        {
+            dashTimeCounter-=Time.deltaTime;
+            if (dashTimeCounter <= 0)
+            {
+                isDash = false;
+            }
+        }
         inputDirection = inputControl.GamePlay.Move.ReadValue<Vector2>();
         //CheckState();
     }
     private void FixedUpdate()
     {
-        if (!isHurt & !isAttack)//受伤被击退时禁用移动
+        if (!isDash)//受伤被击退时禁用移动
             Move();
         Character.Instance.PositionInfo.Enqueue(this.rb.velocity);
     }
@@ -71,6 +80,7 @@ public class PlayerControllerSystem : MonoBehaviour
 
     public void Move()
     {
+        //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
         rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
         //反向移动翻转
         int faceDir = (int)transform.localScale.x;
@@ -87,29 +97,38 @@ public class PlayerControllerSystem : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        //if (physicsCheck.isGround)
+        if (physicsCheck.isGround)
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }//跳跃函数
 
-
-    public void GetHurt(Transform attacker)//受伤击退函数
+    private void Dash(InputAction.CallbackContext obj)
     {
-        isHurt = true;
-        rb.velocity = Vector2.zero;
-        Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
-        //用坐标差值求出攻击与被攻击者之间的方向，normalized归一化使值取0或1
-        rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
+        isDash= true;
+        dashTimeCounter = dashTime;
+        rb.AddForce(new Vector2(inputDirection.x*dashForce,0), ForceMode2D.Impulse); 
     }
 
-    public void PlayerDead()
-    {
-        isDead = true;
-        inputControl.GamePlay.Disable();
+
+
+
+        //public void GetHurt(Transform attacker)//受伤击退函数
+        //{
+        //    isHurt = true;
+        //    rb.velocity = Vector2.zero;
+        //    Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+        //    //用坐标差值求出攻击与被攻击者之间的方向，normalized归一化使值取0或1
+        //    rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
+        //}
+
+        //public void PlayerDead()
+        //{
+        //    isDead = true;
+        //    inputControl.GamePlay.Disable();
+        //}
+
+        //private void CheckState()
+        //{
+        //    coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
+        //}
+
     }
-
-    //private void CheckState()
-    //{
-    //    coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
-    //}
-
-}
